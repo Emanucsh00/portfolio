@@ -1,25 +1,6 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-let transporter;
-
-function getTransporter() {
-  if (transporter) return transporter;
-
-  const { SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS } = process.env;
-  const port = Number(SMTP_PORT || 587);
-  const secure = SMTP_SECURE !== undefined ? SMTP_SECURE === 'true' : port === 465;
-
-  transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port,
-    secure,
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    auth: SMTP_USER ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
-  });
-
-  return transporter;
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendOtpEmail({ to, code, name }) {
   const html = `
@@ -33,16 +14,15 @@ export async function sendOtpEmail({ to, code, name }) {
     </div>
   `;
 
-  try {
-    return await getTransporter().sendMail({
-      from: process.env.SMTP_FROM,
-      to,
-      subject: 'Codigo OTP de acceso al portafolio',
-      html
-    });
-  } catch (err) {
-    transporter = null; // reset so next request retries a fresh connection
-    console.error('[email] sendMail failed:', err.message, err.code ?? '');
-    throw new Error(`Email delivery failed: ${err.message}`);
+  const { error } = await resend.emails.send({
+    from: process.env.RESEND_FROM || 'Portfolio <onboarding@resend.dev>',
+    to,
+    subject: 'Codigo OTP de acceso al portafolio',
+    html
+  });
+
+  if (error) {
+    console.error('[email] Resend error:', error.message, error.name);
+    throw new Error(`Email delivery failed: ${error.message}`);
   }
 }
