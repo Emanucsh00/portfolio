@@ -89,11 +89,11 @@ export async function firebaseLogin(req, res) {
     emailOtpHash
   });
 
-  await sendOtpEmail({
-    to: user.email,
-    code: otp,
-    name: user.full_name
-  });
+  try {
+    await sendOtpEmail({ to: user.email, code: otp, name: user.full_name });
+  } catch {
+    return fail(res, 'Could not send verification email. Try again later.', 503);
+  }
 
   logSecurityEvent('otp_sent', { userId: user.id, email: user.email, ip: req.ip });
 
@@ -135,11 +135,11 @@ export async function resendEmailOtp(req, res) {
   challenge.last_resend_at = new Date();
   await challenge.save();
 
-  await sendOtpEmail({
-    to: challenge.user.email,
-    code: otp,
-    name: challenge.user.full_name
-  });
+  try {
+    await sendOtpEmail({ to: challenge.user.email, code: otp, name: challenge.user.full_name });
+  } catch {
+    return fail(res, 'Could not send verification email. Try again later.', 503);
+  }
 
   logSecurityEvent('otp_resent', { userId: challenge.user.id, resendCount: challenge.resend_count, ip: req.ip });
 
