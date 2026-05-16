@@ -1,0 +1,122 @@
+
+
+ANTONY EMANUEL CASTRO HERNÁNDEZ
+Fullstack Developer (Node.js | Vue | React | AWS)
++502 3348-4137
+emanucaz10111@gmail.com
+PERFIL
+EXPERIENCIA
+2024
+-
+Actualidad
+Software Developer 
+TecnoDev
+Desarrollo de aplicaciones web fullstack utilizando
+Node.js, Vue 3 y React
+Diseño e implementación de APIs REST con
+autenticación JWT y manejo de roles
+Integración de frontend con backend y manejo de
+estados
+Despliegue y configuración de servicios en AWS (S3,
+EC2, CloudFront)
+Participación en análisis de requerimientos y
+arquitectura de soluciones
+Mantenimiento y optimización de sistemas existentes
+Desarrollador Fullstack con experiencia en el desarrollo de aplicaciones web escalables utilizando Node.js, Vue 3, React y servicios en
+AWS. Especializado en la creación de APIs REST, sistemas administrativos y soluciones digitales orientadas a negocio.
+Experiencia  en  implementación  completa  de  proyectos:  desde  análisis  de  requerimientos,  diseño,  desarrollo,  despliegue  y
+mantenimiento.  Destaco  por  mi  rápida  adaptación  tecnológica,  enfoque  en  resultados  y  capacidad  para  trabajar  en  entornos
+dinámicos.
+HABILIDADES Y
+TECNOLOGÍAS
+ Guatemala | Disponible para trabajo remoto/híbrido
+github.com/Emanucsh00
+2020
+-
+Actualidad
+Developer Freelance
+Desarrollos Individuales
+Desarrollo de sistemas tipo POS con gestión de
+usuarios, inventario y ventas
+Creación de landing pages y catálogos digitales
+optimizados para conversión
+Implementación de dashboards y visualización de
+datos
+Integración de APIs y despliegues en entornos
+productivos
+Soluciones personalizadas para clientes en distintos
+rubros
+Core (Especialización)
+Node.js
+Vue 3
+React / Next.js
+TypeScript
+MySQL / MariaDB / PostgreSQL
+AWS (S3, EC2, CloudFront, Route53)
+Complementarias
+Docker
+Git & GitHub (CI/CD)
+Firebase
+Cloudflare
+Grafana, Prometheus, Loki
+NestJS
+Websockets/SEES
+PROYECTOS DESTACADOS
+Sistema POS completo (inventario,
+ventas, usuarios)
+Plataforma administrativa con
+autenticación y roles
+Landing pages orientadas a
+marketing digital
+Integraciones con servicios cloud
+(AWS)
+
+EXPERIENCIA
+2020
+- 
+2024
+Diseñador Gráfico & Marketing Digital
+NATUCULTURA / Servicios Turísticos y Culturales
+Lideré la estrategia de marketing digital en redes
+sociales
+Diseño de contenido visual (Photoshop, Illustrator)
+Creación de campañas en Facebook, Instagram y
+TikTok
+Desarrollo de páginas web y catálogos digitales
+2019
+- 
+2020
+Técnico de Equipo de Cómputo
+Mantenimiento preventivo y correctivo de equipos
+Soporte técnico a usuarios
+EDUCACIÓN
+Ingeniería en Sistemas
+ (en curso)
+Universidad de Occidente
+ 2023 – Actualidad
+Perito Industrial y
+Bachiller en Computación
+Colegio Privado Mixto
+Americano
+ 2018 – 2020
+PROYECTOS Y LOGROS DESTACADOS
+Sistema POS Fullstack
+Desarrollo completo con Node.js + Vue 3
+Implementación de autenticación JWT y roles
+Gestión de inventario, ventas y usuarios
+Despliegue en AWS (EC2 + S3)
+Sistema de Gestión de Inventario (Bodegas)
+Manejo de múltiples bodegas, transferencias y solicitudes
+Control de stock en tiempo real y notificaciones realtime
+APIs REST escalables
+UI administrativa optimizada
+Dashboards de Analítica
+Visualización de datos con métricas en tiempo real
+Integración con herramientas como Grafana / Prometheus / Loki / Tempo
+Optimización de consultas y rendimiento
+LOGROS CLAVE
+Implementé  soluciones  que  redujeron  tiempos  operativos  en  sistemas
+internos
+Desarrollo de múltiples proyectos freelance entregados a clientes reales
+Experiencia desplegando aplicaciones en entornos productivos (AWS)
+Integración completa frontend + backend en aplicaciones reales

@@ -1,0 +1,109 @@
+
+
+RabbitMQ y Apache
+ActiveMQ
+Colas de mensajes y
+desacoplamiento de sistemas
+Emanuel Castro
+
+Cuando dos sistemas se comunican directamente, se vuelven dependientes.
+ Si uno falla, el otro también. Esto no escala bien.
+¿Porque?
+
+¿Cuál fué la
+solución?
+Una  cola  de  mensajes  introduce  un  intermediario
+que permite comunicación asíncrona y desacoplada.
+
+Una cola de mensajes es un sistema que
+permite enviar mensajes entre
+aplicaciones sin que estén directamente
+conectadas.
+El objetivo principal es desacoplar
+componentes y mejorar la escalabilidad.
+¿Y qué es?
+
+Qué
+necesitamos
+saber...
+Productor
+Consumidor
+Envía mensajes
+Recibe mensajes
+Mensaje
+Información
+Broker
+Intermediario
+Cola
+Almacena mensajes
+
+RabbitMQ
+Broker open source
+Usa protocolo AMQP
+Muy usado en
+microservicios
+Es un broker que usa
+AMQP y permite enrutar
+mensajes mediante
+exchanges.
+
+Apache
+ActiveMQ
+Broker orientado a Java
+Usa JMS
+Muy usado en entornos
+empresariales
+ActiveMQ trabaja con el
+estándar JMS y es muy
+común en aplicaciones
+enterprise.
+
+RabbitMQApache ActiveMQ
+AMQPJMS
+ExchangeQueue/Topic
+MultilenguajeEnfocado en Java
+Diferencias
+Ambos cumplen el mismo propósito, pero con enfoques y tecnologías diferentes.
+
+Intermediario
+Recibe los mensajes
+Envía los mensajes
+Arquitectura General
+Este es el flujo base de cualquier sistema de mensajería.
+
+En RabbitMQ, el productor no envía directo a la cola, sino a
+un exchange que decide a dónde enviarlo.
+RabbitMQ Interno
+
+ActiveMQ maneja dos modelos: punto a punto y
+publicación/suscripción.
+ActiveMQ modelos
+
+Tipos de colas de mensajes
+Las colas estándar priorizan velocidad, las FIFO garantizan el orden, las colas de
+prioridad permiten procesar mensajes críticos primero, y las Dead Letter Queue
+almacenan mensajes que fallaron para su análisis.
+
+ACK
+(acknowledgement)
+El ACK confirma que el mensaje fue
+procesado correctamente.
+
+DLQ
+Los mensajes fallidos se envían a una
+Dead Letter Queue para análisis.
+
+SNS (Simple Notification Service)
+SNS permite enviar un mensaje a múltiples servicios al mismo tiempo utilizando un
+modelo de publicación y suscripción.
+
+¿Cómo funciona SNS?
+Un productor publica un mensaje en un topic, y todos los
+suscriptores reciben ese mensaje simultáneamente.
+
+Conclusión
+En arquitecturas modernas, es común usar SNS para distribuir
+eventos y SQS para procesarlos de forma controlada.
+
+Gracias
+UdeO Huehuetenango
