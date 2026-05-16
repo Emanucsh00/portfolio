@@ -41,6 +41,8 @@ export async function sendOtpEmail({ to, code, name }) {
       html
     });
   } catch (err) {
+    transporter = null; // reset so next request retries a fresh connection
+    console.error('[email] sendMail failed:', err.message, err.code ?? '');
     throw new Error(`Email delivery failed: ${err.message}`);
   }
 }
