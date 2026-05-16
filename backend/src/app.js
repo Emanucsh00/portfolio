@@ -2,6 +2,7 @@ import 'dotenv/config';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
+import net from 'net';
 import helmet from 'helmet';
 import authRoutes from './routes/auth.routes.js';
 import expositionRoutes from './routes/exposition.routes.js';
@@ -33,6 +34,40 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/health', (req, res) => {
   res.json({ success: true, message: 'Portfolio backend running' });
+});
+
+// TEMPORARY — remove after diagnosis
+app.get('/health/smtp', (req, res) => {
+  const host = 'smtp.gmail.com';
+  const ports = [465, 587, 25];
+  const TIMEOUT_MS = 6000;
+
+  const checks = ports.map(port => new Promise(resolve => {
+    const start = Date.now();
+    const socket = net.createConnection(port, host);
+    socket.setTimeout(TIMEOUT_MS);
+
+    const done = (status, detail = '') => {
+      socket.destroy();
+      resolve({ port, status, ms: Date.now() - start, detail });
+    };
+
+    socket.on('connect', () => done('open'));
+    socket.on('timeout', () => done('timeout'));
+    socket.on('error',   e  => done('error', e.message));
+  }));
+
+  Promise.all(checks).then(results => {
+    res.json({
+      host,
+      smtpEnv: {
+        SMTP_HOST: process.env.SMTP_HOST,
+        SMTP_PORT: process.env.SMTP_PORT,
+        SMTP_SECURE: process.env.SMTP_SECURE
+      },
+      results
+    });
+  });
 });
 
 app.use('/api/auth', authRoutes);
