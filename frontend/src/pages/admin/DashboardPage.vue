@@ -45,7 +45,7 @@ async function disableTotp() {
   <q-page class="admin-page">
     <div class="admin-grid">
       <div class="page-title-block">
-        <div class="eyebrow">DASHBOARD V2</div>
+        <div class="eyebrow">DASHBOARD V3</div>
         <h1>Centro de control del portafolio</h1>
         <p>Gestiona contenido, seguridad y presencia visual desde un panel mas claro, ordenado y facil de usar.</p>
       </div>
