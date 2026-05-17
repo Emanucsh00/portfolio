@@ -127,6 +127,10 @@ async function submit() {
         </form>
       </section>
     </div>
+
+    <router-link to="/" class="login-back-link">
+      ← Ver portafolio público
+    </router-link>
   </q-page>
 </template>
 
@@ -327,6 +331,20 @@ async function submit() {
   .login-shell {
     grid-template-columns: 1fr;
   }
+}
+
+.login-back-link {
+  display: block;
+  text-align: center;
+  margin-top: 24px;
+  color: var(--brand-600);
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: color 0.18s ease;
+}
+
+.login-back-link:hover {
+  color: var(--brand-900);
 }
 
 @media (max-width: 768px) {

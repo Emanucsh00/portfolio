@@ -11,8 +11,13 @@ import LoginPage from '../pages/auth/LoginPage.vue';
 import VerifyEmailOtpPage from '../pages/auth/VerifyEmailOtpPage.vue';
 import VerifyTotpPage from '../pages/auth/VerifyTotpPage.vue';
 import SetupTotpPage from '../pages/auth/SetupTotpPage.vue';
+import DashboardPage from '../pages/admin/DashboardPage.vue';
+import ExpositionAdminPage from '../pages/admin/ExpositionAdminPage.vue';
 import PortfolioCrudPage from '../pages/admin/PortfolioCrudPage.vue';
 import PortfolioFormPage from '../pages/admin/PortfolioFormPage.vue';
+import ProjectsAdminPage from '../pages/admin/ProjectsAdminPage.vue';
+import SkillsAdminPage from '../pages/admin/SkillsAdminPage.vue';
+import TechnologiesAdminPage from '../pages/admin/TechnologiesAdminPage.vue';
 import { useAuthStore } from '../stores/auth.store';
 
 const routes = [
@@ -38,7 +43,12 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: '', name: 'admin-portfolio', component: PortfolioCrudPage },
+      { path: 'dashboard', name: 'admin-dashboard', component: DashboardPage },
       { path: 'new', name: 'admin-portfolio-new', component: PortfolioFormPage },
+      { path: 'projects', name: 'admin-projects', component: ProjectsAdminPage },
+      { path: 'technologies', name: 'admin-technologies', component: TechnologiesAdminPage },
+      { path: 'skills', name: 'admin-skills', component: SkillsAdminPage },
+      { path: 'exposition', name: 'admin-exposition', component: ExpositionAdminPage },
       { path: ':id', name: 'admin-portfolio-edit', component: PortfolioFormPage }
     ]
   }

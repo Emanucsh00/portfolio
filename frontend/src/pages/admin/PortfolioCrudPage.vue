@@ -54,7 +54,7 @@ async function removeItem(id) {
 
 <template>
   <q-page class="admin-page">
-    <div class="page-title-block row items-center justify-between q-col-gutter-md">
+    <div class="admin-page-header">
       <div>
         <div class="eyebrow">CRUD PRINCIPAL</div>
         <h1>Registros del portafolio</h1>

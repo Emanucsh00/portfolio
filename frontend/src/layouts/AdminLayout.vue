@@ -1,102 +1,126 @@
 <script setup>
-import { computed } from 'vue';
+import { ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth.store';
-import { useUiStore } from '../stores/ui.store';
 
+const $q = useQuasar();
 const router = useRouter();
 const auth = useAuthStore();
-const ui = useUiStore();
 
-const links = computed(() => [
-  { label: 'Registros', icon: 'table_view', to: '/admin' },
-  { label: 'Nuevo registro', icon: 'post_add', to: '/admin/new' }
-]);
+const sidebarOpen = ref(false);
+
+const navGroups = [
+  {
+    label: 'GENERAL',
+    links: [
+      { label: 'Dashboard', icon: 'dashboard', to: '/admin/dashboard' }
+    ]
+  },
+  {
+    label: 'CONTENIDO',
+    links: [
+      { label: 'Portfolio', icon: 'table_view', to: '/admin', exact: true },
+      { label: 'Proyectos', icon: 'folder_open', to: '/admin/projects' },
+      { label: 'Tecnologías', icon: 'code', to: '/admin/technologies' },
+      { label: 'Habilidades', icon: 'psychology', to: '/admin/skills' },
+      { label: 'Exposición', icon: 'present_to_all', to: '/admin/exposition' }
+    ]
+  }
+];
 
 async function logout() {
   await auth.logout();
-  ui.closeMobileMenu();
+  sidebarOpen.value = false;
   router.push('/login');
+}
+
+function onNavClick() {
+  sidebarOpen.value = false;
 }
 </script>
 
 <template>
-  <q-layout view="lHh Lpr lFf" class="admin-shell">
-    <q-header class="admin-header">
-      <div class="admin-header-strip"></div>
-      <q-toolbar class="shell-width admin-toolbar">
-        <q-btn flat round dense icon="menu" class="lt-lg" @click="ui.toggleMobileMenu()" />
-        <div class="admin-toolbar-copy">
-          <div class="brand-kicker">ADMINISTRACION</div>
-          <div class="admin-toolbar-title">CRUD principal del portafolio</div>
+  <q-layout view="lhh LpR lff" class="admin-shell">
+
+    <!-- Mobile top bar -->
+    <q-header v-if="$q.screen.lt.md" class="admin-mobile-bar" elevated>
+      <q-toolbar class="admin-mobile-toolbar">
+        <q-btn flat round dense icon="menu" color="white" class="q-mr-sm" @click="sidebarOpen = true" />
+        <div class="admin-mobile-brand">
+          <span>PORTFOLIO</span>
+          <span>Admin</span>
         </div>
         <q-space />
-        <div class="header-user gt-xs">
-          <span>{{ auth.user?.full_name || 'Usuario' }}</span>
-          <q-chip color="secondary" text-color="white" size="sm">{{ auth.user?.role || 'admin' }}</q-chip>
-        </div>
-        <q-btn unelevated icon="logout" label="Cerrar sesion" class="admin-logout-btn" @click="logout" />
+        <q-btn flat round dense icon="logout" color="white" @click="logout" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="ui.mobileMenuOpen" side="left" overlay bordered class="admin-drawer lt-lg">
-      <div class="drawer-head">
-        <div class="brand-kicker">ADMIN</div>
-        <div class="brand-title small">{{ auth.user?.full_name || 'Portfolio Admin' }}</div>
-        <div class="brand-subtitle">{{ auth.user?.email }}</div>
-        <div class="admin-drawer-badge">JWT activo</div>
+    <!-- Sidebar: persistente en desktop, overlay en mobile -->
+    <q-drawer
+      v-model="sidebarOpen"
+      show-if-above
+      side="left"
+      :width="260"
+      class="admin-sidebar-drawer"
+    >
+      <!-- Brand -->
+      <div class="asb-brand" @click="router.push('/admin')">
+        <div class="asb-brand-icon">
+          <q-icon name="admin_panel_settings" size="22px" />
+        </div>
+        <div class="asb-brand-text">
+          <strong>Portfolio</strong>
+          <span>Admin Panel</span>
+        </div>
       </div>
-      <q-list padding>
-        <q-item v-for="link in links" :key="link.to" clickable :to="link.to" exact @click="ui.closeMobileMenu()">
-          <q-item-section avatar>
-            <q-icon :name="link.icon" />
-          </q-item-section>
-          <q-item-section>{{ link.label }}</q-item-section>
-        </q-item>
-      </q-list>
-      <div class="drawer-footer">
-        <q-btn unelevated color="secondary" icon="logout" label="Cerrar sesion" class="full-width" @click="logout" />
+
+      <!-- Navegación agrupada -->
+      <nav class="asb-nav">
+        <template v-for="group in navGroups" :key="group.label">
+          <p class="asb-nav-label">{{ group.label }}</p>
+          <router-link
+            v-for="link in group.links"
+            :key="link.to"
+            :to="link.to"
+            class="asb-link"
+            :exact-active-class="link.exact ? 'asb-link--active' : ''"
+            :active-class="link.exact ? '' : 'asb-link--active'"
+            @click="onNavClick"
+          >
+            <q-icon :name="link.icon" size="18px" />
+            <span>{{ link.label }}</span>
+          </router-link>
+        </template>
+      </nav>
+
+      <!-- Footer: usuario + acciones -->
+      <div class="asb-footer">
+        <div class="asb-user">
+          <div class="asb-user-avatar">
+            <q-icon name="person" size="18px" />
+          </div>
+          <div class="asb-user-info">
+            <strong>{{ auth.user?.full_name || 'Admin' }}</strong>
+            <span>{{ auth.user?.email || '' }}</span>
+          </div>
+        </div>
+        <div class="asb-role">{{ auth.user?.role || 'admin' }}</div>
+        <button class="asb-footer-btn asb-footer-btn--site" @click="router.push('/'); onNavClick()">
+          <q-icon name="public" size="16px" />
+          <span>Ver portafolio</span>
+        </button>
+        <button class="asb-footer-btn asb-footer-btn--logout" @click="logout">
+          <q-icon name="logout" size="16px" />
+          <span>Cerrar sesión</span>
+        </button>
       </div>
     </q-drawer>
 
+    <!-- Contenido -->
     <q-page-container>
-      <div class="admin-app shell-width">
-        <aside class="admin-sidebar gt-md">
-          <div class="admin-sidebar-head">
-            <div class="brand-kicker">ADMIN</div>
-            <h2>Formulario central</h2>
-            <p>Un solo CRUD con 25 campos para crear, editar y publicar registros.</p>
-          </div>
-
-          <div class="admin-user-card">
-            <span>{{ auth.user?.role || 'admin' }}</span>
-            <strong>{{ auth.user?.full_name || 'Portfolio Admin' }}</strong>
-            <p>{{ auth.user?.email || 'Sin correo disponible' }}</p>
-          </div>
-
-          <nav class="admin-sidebar-nav">
-            <router-link
-              v-for="link in links"
-              :key="link.to"
-              :to="link.to"
-              class="admin-nav-link"
-            >
-              <q-icon :name="link.icon" size="18px" />
-              <span>{{ link.label }}</span>
-            </router-link>
-          </nav>
-
-          <div class="admin-sidebar-actions">
-            <q-btn unelevated color="primary" icon="post_add" label="Nuevo registro" class="full-width" @click="router.push('/admin/new')" />
-            <q-btn unelevated color="secondary" icon="logout" label="Cerrar sesion" class="full-width" @click="logout" />
-            <q-btn flat color="secondary" icon="open_in_new" label="Ver sitio publico" class="full-width" @click="router.push('/')" />
-          </div>
-        </aside>
-
-        <section class="admin-content">
-          <router-view />
-        </section>
-      </div>
+      <router-view />
     </q-page-container>
+
   </q-layout>
 </template>

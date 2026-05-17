@@ -69,7 +69,7 @@ onMounted(load);
 
 <template>
   <q-page class="admin-page">
-    <div class="page-title-block row items-center justify-between">
+    <div class="admin-page-header">
       <div>
         <div class="eyebrow">ADMIN EXPOSITION</div>
         <h1>Gestión del tema de exposición</h1>
@@ -89,7 +89,7 @@ onMounted(load);
     </div>
 
     <q-dialog v-model="dialog">
-      <q-card style="min-width: 760px; max-width: 92vw">
+      <q-card style="width: min(720px, 92vw)">
         <q-card-section class="form-grid">
           <q-input v-model="form.title" label="Título" outlined />
           <q-input v-model="form.presentation_url" label="Presentation URL" outlined />

@@ -1,4 +1,4 @@
-import { Dialog, Loading, Notify, Quasar } from 'quasar';
+import { Dialog, Loading, Notify, Quasar, Screen } from 'quasar';
 import 'quasar/dist/quasar.css';
 import '@quasar/extras/material-icons/material-icons.css';
 
@@ -7,7 +7,8 @@ export function installQuasar(app) {
     plugins: {
       Dialog,
       Loading,
-      Notify
+      Notify,
+      Screen
     },
     config: {
       brand: {

@@ -1,8 +1,8 @@
 <script setup>
-import { useUiStore } from '../stores/ui.store';
+import { ref } from 'vue';
 import { profile } from '../content/profile';
 
-const ui = useUiStore();
+const mobileOpen = ref(false);
 
 const navLinks = [
   { label: 'Inicio', to: '/' },
@@ -12,62 +12,69 @@ const navLinks = [
   { label: 'GitHub', to: '/github-history' },
   { label: 'Exposicion', to: '/exposition' }
 ];
+
+function close() {
+  mobileOpen.value = false;
+}
 </script>
 
 <template>
   <q-layout view="lHh Lpr lFf" class="public-shell">
-    <q-header class="public-header">
+    <q-header
+      class="public-header"
+      :class="{ 'public-header--open': mobileOpen }"
+    >
       <div class="header-gradient-bar"></div>
-      <div class="shell-width public-header-inner">
-        <q-toolbar class="public-toolbar">
-          <div class="brand-block">
+
+      <div class="shell-width public-toolbar-wrap">
+        <div class="public-toolbar">
+          <div class="brand-block" @click="$router.push('/')">
             <div class="brand-kicker">PORTFOLIO</div>
             <div class="brand-title">{{ profile.shortName }} - Fullstack Developer</div>
             <div class="brand-subtitle">{{ profile.title }}</div>
           </div>
 
-          <q-space />
-
-          <div class="desktop-nav gt-sm">
+          <nav class="desktop-nav">
             <router-link
               v-for="link in navLinks"
               :key="link.to"
               :to="link.to"
               class="nav-link"
-            >
-              {{ link.label }}
-            </router-link>
+            >{{ link.label }}</router-link>
             <router-link to="/login" class="nav-link nav-cta">Admin</router-link>
-          </div>
+          </nav>
 
-          <q-btn
-            flat
-            round
-            dense
-            icon="menu"
-            class="lt-md"
-            @click="ui.toggleMobileMenu()"
-          />
-        </q-toolbar>
+          <button
+            class="nav-hamburger"
+            :class="{ 'nav-hamburger--open': mobileOpen }"
+            aria-label="Abrir menú"
+            @click="mobileOpen = !mobileOpen"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-nav" :class="{ 'mobile-nav--open': mobileOpen }">
+        <div class="shell-width mobile-nav-inner">
+          <router-link
+            v-for="(link, i) in navLinks"
+            :key="link.to"
+            :to="link.to"
+            class="mobile-nav-link"
+            @click="close"
+          >
+            <span class="mobile-nav-num">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span>{{ link.label }}</span>
+          </router-link>
+          <router-link to="/login" class="mobile-nav-cta" @click="close">
+            Panel Admin
+          </router-link>
+        </div>
       </div>
     </q-header>
-
-    <q-drawer v-model="ui.mobileMenuOpen" side="right" overlay bordered class="lt-md">
-      <q-list padding>
-        <q-item
-          v-for="link in navLinks"
-          :key="link.to"
-          clickable
-          :to="link.to"
-          @click="ui.closeMobileMenu()"
-        >
-          <q-item-section>{{ link.label }}</q-item-section>
-        </q-item>
-        <q-item clickable to="/login" @click="ui.closeMobileMenu()">
-          <q-item-section>Admin</q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <main class="public-main">

@@ -86,7 +86,7 @@ async function disableTotp() {
     </div>
 
     <q-dialog v-model="disableDialogOpen">
-      <q-card style="min-width: 320px; max-width: 420px; width: 100%;">
+      <q-card style="width: min(420px, 92vw);">
         <q-card-section>
           <div class="text-h6">Desactivar TOTP</div>
           <div class="text-body2 q-mt-sm">

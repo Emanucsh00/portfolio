@@ -100,7 +100,7 @@ onMounted(load);
 
 <template>
   <q-page class="admin-page">
-    <div class="page-title-block row items-center justify-between">
+    <div class="admin-page-header">
       <div>
         <div class="eyebrow">ADMIN PROJECTS</div>
         <h1>Gestión de proyectos</h1>
@@ -127,7 +127,7 @@ onMounted(load);
     </div>
 
     <q-dialog v-model="dialog">
-      <q-card style="min-width: 720px; max-width: 90vw">
+      <q-card style="width: min(720px, 92vw)">
         <q-card-section>
           <div class="text-h6">{{ form.id ? 'Editar proyecto' : 'Nuevo proyecto' }}</div>
         </q-card-section>
