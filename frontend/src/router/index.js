@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PublicLayout from '../layouts/PublicLayout.vue';
-import AdminLayout from '../layouts/AdminLayout.vue';
 import HomePage from '../pages/public/HomePage.vue';
 import ProjectsPage from '../pages/public/ProjectsPage.vue';
 import TechnologiesPage from '../pages/public/TechnologiesPage.vue';
@@ -11,13 +10,7 @@ import LoginPage from '../pages/auth/LoginPage.vue';
 import VerifyEmailOtpPage from '../pages/auth/VerifyEmailOtpPage.vue';
 import VerifyTotpPage from '../pages/auth/VerifyTotpPage.vue';
 import SetupTotpPage from '../pages/auth/SetupTotpPage.vue';
-import DashboardPage from '../pages/admin/DashboardPage.vue';
-import ExpositionAdminPage from '../pages/admin/ExpositionAdminPage.vue';
-import PortfolioCrudPage from '../pages/admin/PortfolioCrudPage.vue';
-import PortfolioFormPage from '../pages/admin/PortfolioFormPage.vue';
-import ProjectsAdminPage from '../pages/admin/ProjectsAdminPage.vue';
-import SkillsAdminPage from '../pages/admin/SkillsAdminPage.vue';
-import TechnologiesAdminPage from '../pages/admin/TechnologiesAdminPage.vue';
+import AdminCrudStandalonePage from '../pages/admin/AdminCrudStandalonePage.vue';
 import { useAuthStore } from '../stores/auth.store';
 
 const routes = [
@@ -37,21 +30,14 @@ const routes = [
   { path: '/verify-email', name: 'verify-email', component: VerifyEmailOtpPage },
   { path: '/verify-totp', name: 'verify-totp', component: VerifyTotpPage },
   { path: '/setup-totp', name: 'setup-totp', component: SetupTotpPage },
-  {
-    path: '/admin',
-    component: AdminLayout,
-    meta: { requiresAuth: true },
-    children: [
-      { path: '', name: 'admin-portfolio', component: PortfolioCrudPage },
-      { path: 'dashboard', name: 'admin-dashboard', component: DashboardPage },
-      { path: 'new', name: 'admin-portfolio-new', component: PortfolioFormPage },
-      { path: 'projects', name: 'admin-projects', component: ProjectsAdminPage },
-      { path: 'technologies', name: 'admin-technologies', component: TechnologiesAdminPage },
-      { path: 'skills', name: 'admin-skills', component: SkillsAdminPage },
-      { path: 'exposition', name: 'admin-exposition', component: ExpositionAdminPage },
-      { path: ':id', name: 'admin-portfolio-edit', component: PortfolioFormPage }
-    ]
-  }
+  { path: '/admin', name: 'admin-portfolio', component: AdminCrudStandalonePage, meta: { requiresAuth: true } },
+  { path: '/admin/new', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/:id', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/dashboard', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/projects', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/technologies', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/skills', redirect: { name: 'admin-portfolio' } },
+  { path: '/admin/exposition', redirect: { name: 'admin-portfolio' } }
 ];
 
 const router = createRouter({

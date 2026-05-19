@@ -1,126 +1,143 @@
 <script setup>
-import { ref } from 'vue';
-import { useQuasar } from 'quasar';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth.store';
 
-const $q = useQuasar();
 const router = useRouter();
 const auth = useAuthStore();
 
-const sidebarOpen = ref(false);
-
-const navGroups = [
-  {
-    label: 'GENERAL',
-    links: [
-      { label: 'Dashboard', icon: 'dashboard', to: '/admin/dashboard' }
-    ]
-  },
-  {
-    label: 'CONTENIDO',
-    links: [
-      { label: 'Portfolio', icon: 'table_view', to: '/admin', exact: true },
-      { label: 'Proyectos', icon: 'folder_open', to: '/admin/projects' },
-      { label: 'Tecnologías', icon: 'code', to: '/admin/technologies' },
-      { label: 'Habilidades', icon: 'psychology', to: '/admin/skills' },
-      { label: 'Exposición', icon: 'present_to_all', to: '/admin/exposition' }
-    ]
-  }
-];
+const userMeta = computed(() => ({
+  name: auth.user?.full_name || 'Portfolio Admin',
+  email: auth.user?.email || 'Sin correo',
+  role: auth.user?.role || 'admin'
+}));
 
 async function logout() {
   await auth.logout();
-  sidebarOpen.value = false;
   router.push('/login');
-}
-
-function onNavClick() {
-  sidebarOpen.value = false;
 }
 </script>
 
 <template>
-  <q-layout view="lhh LpR lff" class="admin-shell">
-
-    <!-- Mobile top bar -->
-    <q-header v-if="$q.screen.lt.md" class="admin-mobile-bar" elevated>
-      <q-toolbar class="admin-mobile-toolbar">
-        <q-btn flat round dense icon="menu" color="white" class="q-mr-sm" @click="sidebarOpen = true" />
-        <div class="admin-mobile-brand">
-          <span>PORTFOLIO</span>
-          <span>Admin</span>
+  <q-layout view="hHh lpR fFf" class="admin-layout-shell">
+    <q-header class="admin-layout-header">
+      <q-toolbar class="admin-layout-toolbar">
+        <div class="admin-layout-brand">
+          <span class="admin-layout-kicker">ADMIN</span>
+          <strong>Modulo CRUD</strong>
         </div>
+
         <q-space />
-        <q-btn flat round dense icon="logout" color="white" @click="logout" />
+
+        <div class="admin-layout-user">
+          <span>{{ userMeta.name }}</span>
+          <small>{{ userMeta.email }}</small>
+          <em>{{ userMeta.role }}</em>
+        </div>
+
+        <div class="admin-layout-actions">
+          <q-btn unelevated color="primary" icon="public" label="Landing page" @click="router.push('/')" />
+          <q-btn unelevated color="negative" icon="logout" label="Cerrar sesion" @click="logout" />
+        </div>
       </q-toolbar>
     </q-header>
 
-    <!-- Sidebar: persistente en desktop, overlay en mobile -->
-    <q-drawer
-      v-model="sidebarOpen"
-      show-if-above
-      side="left"
-      :width="260"
-      class="admin-sidebar-drawer"
-    >
-      <!-- Brand -->
-      <div class="asb-brand" @click="router.push('/admin')">
-        <div class="asb-brand-icon">
-          <q-icon name="admin_panel_settings" size="22px" />
-        </div>
-        <div class="asb-brand-text">
-          <strong>Portfolio</strong>
-          <span>Admin Panel</span>
-        </div>
-      </div>
-
-      <!-- Navegación agrupada -->
-      <nav class="asb-nav">
-        <template v-for="group in navGroups" :key="group.label">
-          <p class="asb-nav-label">{{ group.label }}</p>
-          <router-link
-            v-for="link in group.links"
-            :key="link.to"
-            :to="link.to"
-            class="asb-link"
-            :exact-active-class="link.exact ? 'asb-link--active' : ''"
-            :active-class="link.exact ? '' : 'asb-link--active'"
-            @click="onNavClick"
-          >
-            <q-icon :name="link.icon" size="18px" />
-            <span>{{ link.label }}</span>
-          </router-link>
-        </template>
-      </nav>
-
-      <!-- Footer: usuario + acciones -->
-      <div class="asb-footer">
-        <div class="asb-user">
-          <div class="asb-user-avatar">
-            <q-icon name="person" size="18px" />
-          </div>
-          <div class="asb-user-info">
-            <strong>{{ auth.user?.full_name || 'Admin' }}</strong>
-            <span>{{ auth.user?.email || '' }}</span>
-          </div>
-        </div>
-        <div class="asb-role">{{ auth.user?.role || 'admin' }}</div>
-        <button class="asb-footer-btn asb-footer-btn--site" @click="router.push('/'); onNavClick()">
-          <q-icon name="public" size="16px" />
-          <span>Ver portafolio</span>
-        </button>
-        <button class="asb-footer-btn asb-footer-btn--logout" @click="logout">
-          <q-icon name="logout" size="16px" />
-          <span>Cerrar sesión</span>
-        </button>
-      </div>
-    </q-drawer>
-
-    <!-- Contenido -->
-    <q-page-container>
+    <q-page-container class="admin-layout-container">
       <router-view />
     </q-page-container>
-
   </q-layout>
 </template>
+
+<style scoped>
+.admin-layout-shell {
+  background: linear-gradient(180deg, #f3f6fb 0%, #e9eef6 100%);
+}
+
+.admin-layout-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  color: #0f172a;
+}
+
+.admin-layout-toolbar {
+  min-height: 78px;
+  padding: 0 24px;
+  gap: 18px;
+}
+
+.admin-layout-brand {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-layout-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
+.admin-layout-brand strong {
+  font-size: 1.08rem;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.admin-layout-user {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+
+.admin-layout-user span {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.admin-layout-user small {
+  color: #64748b;
+}
+
+.admin-layout-user em {
+  color: #2563eb;
+  font-style: normal;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+}
+
+.admin-layout-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-layout-container {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .admin-layout-toolbar {
+    padding: 14px 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .admin-layout-user {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .admin-layout-actions {
+    width: 100%;
+  }
+
+  .admin-layout-actions :deep(.q-btn) {
+    flex: 1 1 220px;
+  }
+}
+</style>
